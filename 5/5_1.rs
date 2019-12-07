@@ -1,6 +1,12 @@
 use std::fs;
 use std::io::{self, Write};
 
+const OP_EXIT: i32 = 99;
+const OP_ADD: i32 = 1;
+const OP_MULTIPLY: i32 = 2;
+const OP_INPUT: i32 = 3;
+const OP_OUTPUT: i32 = 4;
+
 fn run_program(mut program: Vec<i32>) -> i32 {    
     let mut i: usize = 0;
 
@@ -9,37 +15,41 @@ fn run_program(mut program: Vec<i32>) -> i32 {
         let opcode = read_opcode(instr);
         i+= 1;
 
-        if opcode == 99 {
-            println!("Program exited");
-            break;
-        }
-
-        if opcode == 1 || opcode == 2 {
-            let param1 = read_param_value(i, &program, 0);
-            let param2 = read_param_value(i, &program, 1);
-            let result_address = program[i + 2] as usize;
-            i += 3;
-            if opcode == 1 {
-                program[result_address] = param1 + param2;
-            } else {
-                program[result_address] = param1 * param2;
-            }
-        } else if opcode == 3 {
-            let param = program[i];
-            i += 1;
-            let mut input_text = String::new();
-            print!("> ");
-            io::stdout().flush().unwrap();
-            io::stdin().read_line(&mut input_text).unwrap();
-            let input_value = input_text
-                .trim()
-                .parse::<i32>()
-                .expect("Input value is not an integer");
-            program[param as usize] = input_value;
-        } else if opcode == 4 {
-            let param = read_param_value(i, &program, 0);
-            i += 1;
-            println!("{}", param);
+        match opcode {
+            OP_EXIT => {
+                println!("Program exited");
+                break;
+            },
+            OP_ADD | OP_MULTIPLY => {
+                let param1 = read_param_value(i, &program, 0);
+                let param2 = read_param_value(i, &program, 1);
+                let result_address = program[i + 2] as usize;
+                i += 3;
+                match opcode {
+                    OP_ADD => program[result_address] = param1 + param2,
+                    OP_MULTIPLY => program[result_address] = param1 * param2,
+                    _ => {}
+                }
+            },
+            OP_INPUT => {
+                let param = program[i];
+                i += 1;
+                let mut input_text = String::new();
+                print!("> ");
+                io::stdout().flush().unwrap();
+                io::stdin().read_line(&mut input_text).unwrap();
+                let input_value = input_text
+                    .trim()
+                    .parse::<i32>()
+                    .expect("Input value is not an integer");
+                program[param as usize] = input_value;    
+            },
+            OP_OUTPUT => {
+                let param = read_param_value(i, &program, 0);
+                i += 1;
+                println!("{}", param);
+            },
+            _ => {}
         }
     }
     
