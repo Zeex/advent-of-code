@@ -1,7 +1,7 @@
 use std::fs;
 
 fn main() {
-    let mut program = fs::read_to_string("input_1.txt")
+    let mut program = fs::read_to_string("input.txt")
         .unwrap()
         .trim()
         .split(",")
