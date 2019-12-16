@@ -1,0 +1,206 @@
+0000:            input    [8]
+0002:     jump_if_true    [8] 310
+0005:    jump_if_false    0 11
+0008:                0   
+0009:                0   
+0010:                0   
+0011:           output    1
+0013:           output    0
+0015:            input    [8]
+0017:         multiply    -1 [8] [10]
+0021:              add    [10] 1 [10]
+0025:           output    [10]
+0027:           equals    1 [8] [10]
+0031:           output    [10]
+0033:         multiply    [8] 1 [28]
+0037:              add    [105] [11] [10]
+0041:            input    [8]
+0043:         multiply    -1 [8] [10]
+0047:              add    [10] 1 [10]
+0051:           output    [10]
+0053:           equals    [8] 0 [10]
+0057:           output    [10]
+0059:         multiply    1 [8] [55]
+0063:            input    [8]
+0065:         multiply    -1 [8] [10]
+0069:              add    [10] 1 [10]
+0073:           output    [10]
+0075:           equals    0 [8] [10]
+0079:           output    [10]
+0081:              add    [8] 0 [76]
+0085:            input    [8]
+0087:         multiply    [8] -1 [10]
+0091:              add    1 [10] [10]
+0095:           output    [10]
+0097:           equals    0 [8] [10]
+0101:           output    [10]
+0103:         multiply    1 [8] [98]
+0107:              add    [1004] [7] [10]
+0111:    jump_if_false    [0] 60
+0114:            input    [8]
+0116:         multiply    -1 [8] [10]
+0120:              add    [10] 1 [10]
+0124:           output    [10]
+0126:           equals    0 [8] [10]
+0130:           output    [10]
+0132:         multiply    [8] 1 [127]
+0136:         multiply    [1102] [4] [10]
+0140:              add    [1108] [7] [10]
+0144:         multiply    [1102] [4] [10]
+0148:         multiply    [101] [18] [10]
+0152:            input    [8]
+0154:         multiply    [8] -1 [10]
+0158:              add    [10] 1 [10]
+0162:           output    [10]
+0164:           equals    [8] 0 [10]
+0168:           output    [10]
+0170:         multiply    1 [8] [166]
+0174:    jump_if_false    [0] 28
+0177:            input    [8]
+0179:         multiply    [8] -1 [10]
+0183:              add    1 [10] [10]
+0187:           output    [10]
+0189:           equals    1 [8] [10]
+0193:           output    [10]
+0195:              add    0 [8] [190]
+0199:    jump_if_false    [0] 91
+0202:              add    [1108] [5] [10]
+0206:            input    [8]
+0208:         multiply    [8] -1 [10]
+0212:              add    1 [10] [10]
+0216:           output    [10]
+0218:           equals    [8] 1 [10]
+0222:           output    [10]
+0224:         multiply    [8] 1 [220]
+0228:              add    [1009] [14] [10]
+0232:         multiply    [1103] [19] [10]
+0236:         multiply    [1102] [9] [10]
+0240:         multiply    [1007] [4] [10]
+0244:            input    [8]
+0246:         multiply    [8] -1 [10]
+0250:              add    1 [10] [10]
+0254:           output    [10]
+0256:           equals    [8] 1 [10]
+0260:           output    [10]
+0262:              add    0 [8] [258]
+0266:         multiply    [3] [0] [10]
+0270:    jump_if_false    [0] 4
+0273:            input    [8]
+0275:         multiply    -1 [8] [10]
+0279:              add    [10] 1 [10]
+0283:           output    [10]
+0285:           equals    1 [8] [10]
+0289:           output    [10]
+0291:              add    [8] 0 [286]
+0295:    jump_if_false    [0] 82
+0298:              add    1 [9] [9]
+0302:        less_than    [9] 1057 [10]
+0306:     jump_if_true    [10] 15
+0309:             halt   
+0310:  rel_base_offset    632
+0312:           output    0
+0314:           output    1
+0316:         multiply    1 838479487636 [$1]
+0320:         multiply    327 1 [$0]
+0324:    jump_if_false    0 431
+0327:         multiply    1 932813579156 [$1]
+0331:         multiply    1 338 [$0]
+0335:    jump_if_false    0 431
+0338:            input    [10]
+0340:           output    0
+0342:           output    1
+0344:            input    [10]
+0346:           output    0
+0348:           output    0
+0350:            input    [10]
+0352:           output    0
+0354:           output    1
+0356:            input    [10]
+0358:           output    0
+0360:           output    1
+0362:            input    [10]
+0364:           output    0
+0366:           output    0
+0368:            input    [10]
+0370:           output    0
+0372:           output    1
+0374:              add    0 179318033447 [$1]
+0378:              add    385 0 [$0]
+0382:     jump_if_true    1 431
+0385:              add    248037678275 0 [$1]
+0389:              add    0 396 [$0]
+0393:     jump_if_true    1 431
+0396:            input    [10]
+0398:           output    0
+0400:           output    0
+0402:            input    [10]
+0404:           output    0
+0406:           output    0
+0408:              add    0 709496558348 [$1]
+0412:         multiply    419 1 [$0]
+0416:     jump_if_true    1 431
+0419:              add    825544561408 0 [$1]
+0423:              add    0 430 [$0]
+0427:    jump_if_false    0 431
+0430:             halt   
+0431:  rel_base_offset    2
+0433:              add    0 [$-1] [$1]
+0437:              add    40 0 [$2]
+0441:         multiply    462 1 [$3]
+0445:              add    0 452 [$0]
+0449:    jump_if_false    0 495
+0452:  rel_base_offset    -2
+0454:     jump_if_true    1 [$0]
+0457:                0   
+0458:              add    [0] [0] [1]
+0462:  rel_base_offset    2
+0464:            input    [10]
+0466:           output    [$-1]
+0468:              add    [457] 458 [473]
+0472:           output    [0]
+0474:              add    [457] 1 [457]
+0478:           equals    4 [457] [10]
+0482:    jump_if_false    [10] 489
+0485:              add    0 0 [457]
+0489:  rel_base_offset    -2
+0491:    jump_if_false    0 [$0]
+0494:                0   
+0495:  rel_base_offset    4
+0497:              add    0 [$-1] [494]
+0501:        less_than    [$-3] 0 [10]
+0505:    jump_if_false    [10] 512
+0508:              add    0 0 [$-3]
+0512:              add    0 [$-3] [$1]
+0516:              add    0 [$-2] [$2]
+0520:              add    1 0 [$3]
+0524:         multiply    531 1 [$0]
+0528:     jump_if_true    1 536
+0531:  rel_base_offset    -4
+0533:     jump_if_true    1 [$0]
+0536:  rel_base_offset    5
+0538:        less_than    [$-3] 1 [10]
+0542:    jump_if_false    [10] 559
+0545:        less_than    [$-4] [$-2] [10]
+0549:    jump_if_false    [10] 559
+0552:              add    0 [$-4] [$-4]
+0556:    jump_if_false    0 627
+0559:         multiply    [$-4] 1 [$1]
+0563:              add    [$-3] -1 [$2]
+0567:         multiply    [$-2] 2 [$3]
+0571:         multiply    578 1 [$0]
+0575:     jump_if_true    1 536
+0578:              add    0 [$1] [$-4]
+0582:              add    1 0 [$-1]
+0586:        less_than    [$-4] [$-2] [10]
+0590:    jump_if_false    [10] 597
+0593:         multiply    0 1 [$-1]
+0597:         multiply    [$-2] [$-1] [$-2]
+0601:        less_than    0 [$-3] [10]
+0605:    jump_if_false    [10] 619
+0608:              add    [$-1] 0 [$1]
+0612:         multiply    1 619 [$0]
+0616:     jump_if_true    1 [494]
+0619:         multiply    [$-2] -1 [$-2]
+0623:              add    [$-4] [$-2] [$-4]
+0627:  rel_base_offset    -5
+0629:    jump_if_false    0 [$0]
