@@ -1,5 +1,6 @@
 extern crate pancurses;
 
+use std::env;
 use std::fs;
 use std::collections::{HashMap, VecDeque};
 use std::thread;
@@ -198,129 +199,129 @@ fn run_program(program: &mut Program) -> i64 {
     return EXIT_ERROR;
 }
 
-// struct GameState {
-//     grid: Vec<Vec<u8>>,
-//     score: i64,
-//     steps: Vec<i32>,
-//     steps_to_replay: VecDeque<i32>
-// }
+struct GameState {
+    grid: Vec<Vec<u8>>,
+    score: i64,
+    steps: Vec<i32>,
+    steps_to_replay: VecDeque<i32>
+}
 
-// impl GameState {
-//     pub fn new() -> GameState {
-//         GameState {
-//             grid: vec![vec![0; 80]; 60],
-//             score: 0,
-//             steps: Vec::new(),
-//             steps_to_replay: VecDeque::new()
-//         }
-//     }
-// }
+impl GameState {
+    pub fn new() -> GameState {
+        GameState {
+            grid: vec![vec![0; 80]; 60],
+            score: 0,
+            steps: Vec::new(),
+            steps_to_replay: VecDeque::new()
+        }
+    }
+}
 
-// fn run_game(program: &mut Program, game: &mut GameState, window: &Window) {
-//     init_program(program);
-//     program.memory.insert(0, 2); // insert 2 quarters
+fn run_game_manual(program: &mut Program, game: &mut GameState, window: &Window) {
+    init_program(program);
+    program.memory.insert(0, 2); // insert 2 quarters
 
-//     window.refresh();
-//     window.keypad(true);
+    window.refresh();
+    window.keypad(true);
 
-//     'game: loop {
-//         match run_program(program) {
-//             EXIT_NEED_INPUT => {
-//                 window.clear();
-//                 window.printw(format!("Score: {}\n\n", game.score));
+    'game: loop {
+        match run_program(program) {
+            EXIT_NEED_INPUT => {
+                window.clear();
+                window.printw(format!("Score: {}\n\n", game.score));
 
-//                 for i in 0..game.grid.len() {
-//                     for j in 0..game.grid[i].len() {
-//                         let tile = game.grid[i][j] as u8;
-//                         let symbol = match tile {
-//                             TILE_WALL => "#",
-//                             TILE_BLOCK => "*",
-//                             TILE_PADDLE => "_",
-//                             TILE_BALL => "o",
-//                             _ => " "
-//                         };
-//                         window.printw(symbol);
-//                     }
-//                     window.printw("\n");
-//                 }
+                for i in 0..game.grid.len() {
+                    for j in 0..game.grid[i].len() {
+                        let tile = game.grid[i][j] as u8;
+                        let symbol = match tile {
+                            TILE_WALL => "#",
+                            TILE_BLOCK => "*",
+                            TILE_PADDLE => "_",
+                            TILE_BALL => "o",
+                            _ => " "
+                        };
+                        window.printw(symbol);
+                    }
+                    window.printw("\n");
+                }
 
-//                 match game.steps_to_replay.pop_front() {
-//                     Some(v) => {
-//                         program.data.push_back(v as i64);
-//                         continue;
-//                     }
-//                     None => {}
-//                 }
+                match game.steps_to_replay.pop_front() {
+                    Some(v) => {
+                        program.data.push_back(v as i64);
+                        continue;
+                    }
+                    None => {}
+                }
 
-//                 loop {
-//                     let key = window.getch();
-//                     match key {
-//                         Some(Input::KeyLeft) => {
-//                             program.data.push_back(-1);
-//                             break;
-//                         },
-//                         Some(Input::KeyRight) => {
-//                             program.data.push_back(1);
-//                             break;
-//                         },
-//                         Some(Input::Character(' ')) => {
-//                             program.data.push_back(0);
-//                             break;
-//                         },
-//                         Some(Input::Character('l')) => {
-//                             game.steps = fs::read_to_string("save.txt").unwrap()
-//                                 .split(",")
-//                                 .map(|x| x.parse::<i32>().unwrap())
-//                                 .collect();
-//                             game.steps_to_replay = game.steps.clone().into_iter().collect();
-//                             continue 'game;
-//                         },
-//                         Some(Input::Character('s')) => {
-//                             fs::write("save.txt",
-//                                 game.steps.iter()
-//                                     .map(|x| x.to_string())
-//                                     .collect::<Vec<String>>().join(",")).unwrap();
-//                             break;
-//                         },
-//                         Some(Input::Character('q')) => {
-//                             println!("Goodbye!");
-//                             return;
-//                         },
-//                         _ => {}
-//                     }
-//                 }
+                loop {
+                    let key = window.getch();
+                    match key {
+                        Some(Input::KeyLeft) => {
+                            program.data.push_back(-1);
+                            break;
+                        },
+                        Some(Input::KeyRight) => {
+                            program.data.push_back(1);
+                            break;
+                        },
+                        Some(Input::Character(' ')) => {
+                            program.data.push_back(0);
+                            break;
+                        },
+                        Some(Input::Character('l')) => {
+                            game.steps = fs::read_to_string("save.txt").unwrap()
+                                .split(",")
+                                .map(|x| x.parse::<i32>().unwrap())
+                                .collect();
+                            game.steps_to_replay = game.steps.clone().into_iter().collect();
+                            continue 'game;
+                        },
+                        Some(Input::Character('s')) => {
+                            fs::write("save.txt",
+                                game.steps.iter()
+                                    .map(|x| x.to_string())
+                                    .collect::<Vec<String>>().join(",")).unwrap();
+                            break;
+                        },
+                        Some(Input::Character('q')) => {
+                            println!("Goodbye!");
+                            return;
+                        },
+                        _ => {}
+                    }
+                }
 
-//                 if !program.data.is_empty() {
-//                     game.steps.push(*program.data.back().unwrap() as i32);
-//                 }
-//             },
-//             EXIT_OUTPUT => {
-//                 if program.data.len() == 3 {
-//                     let x = program.data.pop_front().unwrap();
-//                     let y = program.data.pop_front().unwrap();
-//                     let tile = program.data.pop_front().unwrap();
-//                     match (x, y) {
-//                         (-1, 0) => {
-//                             if tile != 0 {
-//                                 game.score = tile;
-//                             }
-//                         },
-//                         _ => {
-//                             game.grid[y as usize][x as usize] = tile as u8;
-//                         }
-//                     }
-//                 }
-//             },
-//             EXIT_HALT => {
-//                 break;
-//             }
-//             _ => {
-//                 println!("Oops, something went wrong");
-//                 break;
-//             }
-//         }
-//     }
-// }
+                if !program.data.is_empty() {
+                    game.steps.push(*program.data.back().unwrap() as i32);
+                }
+            },
+            EXIT_OUTPUT => {
+                if program.data.len() == 3 {
+                    let x = program.data.pop_front().unwrap();
+                    let y = program.data.pop_front().unwrap();
+                    let tile = program.data.pop_front().unwrap();
+                    match (x, y) {
+                        (-1, 0) => {
+                            if tile != 0 {
+                                game.score = tile;
+                            }
+                        },
+                        _ => {
+                            game.grid[y as usize][x as usize] = tile as u8;
+                        }
+                    }
+                }
+            },
+            EXIT_HALT => {
+                break;
+            }
+            _ => {
+                println!("Oops, something went wrong");
+                break;
+            }
+        }
+    }
+}
 
 fn run_game_auto(program: &mut Program, window: &Window) {
     init_program(program);
@@ -329,51 +330,36 @@ fn run_game_auto(program: &mut Program, window: &Window) {
     let mut grid: Vec<Vec<u8>> = vec![vec![0; 50]; 25];
 
     let mut score: i64 = 0;
-    // let mut ball_pos = (0, 0);
-    // let mut prev_ball_pos = (0, 0);
-    // let mut player_pos = (0, 0);
+    let mut ball_x = 0 ;
+    let mut paddle_x = 0;
 
     loop {
-        // let (ball_x, ball_y) = ball_pos;
-        // let (prev_ball_x, prev_ball_y) = prev_ball_pos;
-        // let (player_x, player_y) = player_pos;
-        // let next_ball_x = if ball_y < prev_ball_y {
-        //     prev_ball_x + (prev_ball_y - player_y) * (ball_x - prev_ball_x) / (prev_ball_y - ball_y)
-        // } else {
-        //     ball_x
-        // };
-
         match run_program(program) {
             EXIT_NEED_INPUT => {
-                // for i in 0..grid.len() {
-                //     for j in 0..grid[i].len() {
-                //         let p = (j as i32, (grid.len() - i - 1) as i32);
-                //         match tile {
-                //             TILE_BALL => {
-                //                 if ball_pos != p {
-                //                     prev_ball_pos = ball_pos;
-                //                     ball_pos = p;
-                //                 }
-                //             },
-                //             TILE_PADDLE => {
-                //                 player_pos = p;
-                //             },
-                //             _ => {}
-                //         }
-                //     }
-                // }
+                thread::sleep(time::Duration::from_millis(50));
 
-                // thread::sleep(time::Duration::from_millis(5));
+                for i in 0..grid.len() {
+                    for j in 0..grid[i].len() {
+                        let tile = grid[i][j] as u8;
+                        match tile {
+                            TILE_BALL => {
+                                ball_x = j;
+                            },
+                            TILE_PADDLE => {
+                                paddle_x = j;
+                            },
+                            _ => {}
+                        }
+                    }
+                }
 
-                // if next_ball_x < player_x {
-                //     program.data.push_back(-2);
-                // } else if next_ball_x > player_x {
-                //     program.data.push_back(2);
-                // } else {
-                //     program.data.push_back(0);
-                // }
-
-                program.data.push_back(0);
+                if paddle_x < ball_x {
+                    program.data.push_back(1);
+                } else if paddle_x > ball_x {
+                    program.data.push_back(-1);
+                } else {
+                    program.data.push_back(0);
+                }
             },
             EXIT_OUTPUT => {
                 if program.data.len() == 3 {
@@ -381,14 +367,17 @@ fn run_game_auto(program: &mut Program, window: &Window) {
                     let y = program.data.pop_front().unwrap();
                     let tile = program.data.pop_front().unwrap();
                     match (x, y) {
-                        (-1, 0) => score = tile,
-                        _ => grid[y as usize][x as usize] = tile as u8
+                        (-1, 0) => {
+                            score = tile;
+                            println!("Score: {}", score);
+                        }
+                        _ => {
+                            grid[y as usize][x as usize] = tile as u8;
+                        }
                     }
 
                     window.clear();
                     window.printw(format!("Score: {}\n", score));
-                    // window.printw(format!("Ball @ {:?}\n", ball_pos));
-                    // window.printw(format!("Player @ {:?}\n", player_pos));
                     window.printw("\n");
 
                     for i in 0..grid.len() {
@@ -402,26 +391,17 @@ fn run_game_auto(program: &mut Program, window: &Window) {
                                 _ => " "
                             };
                             window.printw(symbol);
-                            // let p = (j as i32, (grid.len() - i - 1) as i32);
-                            // match tile {
-                            //     TILE_BALL => {
-                            //         if ball_pos != p {
-                            //             prev_ball_pos = ball_pos;
-                            //             ball_pos = p;
-                            //         }
-                            //     },
-                            //     TILE_PADDLE => {
-                            //         player_pos = p;
-                            //     },
-                            //     _ => {}
-                            // }
                         }
                         window.printw("\n");
                     }
+
                     window.refresh();
                 }
             },
             EXIT_HALT => {
+                window.clear();
+                window.printw(format!("You score: {}\n", score));
+                window.printw("Press any key to exit...\n");
                 window.getch();
                 break;
             }
@@ -439,11 +419,15 @@ fn main() {
     pancurses::cbreak();
 
     let mut program = load_program("input.txt");
-    // let mut game = GameState::new();
-    // run_game(&mut program, &mut game, &window);
-    // println!("Your score was: {}", game.score);
+    let args: Vec<String> = env::args().collect();
 
-    run_game_auto(&mut program, &window);
+    if args.len() > 1 && args[1] == "play" {
+        let mut game = GameState::new();
+        run_game_manual(&mut program, &mut game, &window);
+        println!("Your score was: {}", game.score);
+    } else {
+        run_game_auto(&mut program, &window);
+    }
 
     // pancurses::endwin();
 }
