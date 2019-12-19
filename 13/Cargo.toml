@@ -1,0 +1,17 @@
+[package]
+name = "day13"
+version = "0.1.0"
+authors = ["Zeex <zeex@rocketmail.com>"]
+edition = "2018"
+
+[[bin]]
+name = "13_1"
+path = "13_1.rs"
+
+[[bin]]
+name = "13_2"
+path = "13_2.rs"
+
+[dependencies.pancurses]
+version = "0.16"
+features = ["win32"]
